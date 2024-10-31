@@ -8,7 +8,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="flex flex-col items-center md:flex-row gap-8 justify-center md:text-left md:mb-52 mb-20"
+      className="flex flex-col items-center md:flex-row gap-8 justify-center md:text-left md:mb-60 mb-20"
     >
       <div className="w-[310px] h-[280px] md:w-[320px] md:h-[320px] overflow-hidden flex items-center justify-center">
         <img

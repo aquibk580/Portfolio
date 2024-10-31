@@ -2,7 +2,7 @@ export default function Skills() {
     const skills = [
       {
         text:"HTML5",
-        imageUrl:"/HTML-icon.png"
+        imageUrl:"/html-icon.png"
       },
       {
         text:"CSS3",
