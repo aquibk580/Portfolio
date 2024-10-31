@@ -19,7 +19,7 @@ export default function Home() {
           <img src="/github-icon.png" alt="GitHub" className="w-8 h-8" />
         </a>
         <a href="https://www.linkedin.com/in/aquib-khan-42966b292/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer">
-          <img src="/linkedin-icon.png" alt="LinkedIn" className="w-8 h-8" />
+          <img src="/LinkedIn-icon.png" alt="LinkedIn" className="w-8 h-8" />
         </a>
         <a href="https://x.com/Aquib_K_" target="_blank" rel="noopener noreferrer">
           <img src="/twitter-icon.png" alt="Twitter" className="w-8 h-8" />
