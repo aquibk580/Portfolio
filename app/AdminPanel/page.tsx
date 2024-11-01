@@ -1,12 +1,12 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
-import axios, { AxiosError } from "axios";
-import { AdminPanelSideBar } from "@/components/AdminPanelSideBar";
+import { useState } from "react"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Search, Trash } from "lucide-react"
+import axios, { AxiosError } from "axios"
+import { AdminPanelSideBar } from "@/components/AdminPanelSideBar"
 import {
   Dialog,
   DialogContent,
@@ -14,54 +14,69 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
+} from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
 
 interface Message {
-  id: string;
-  name: string;
-  email: string;
-  message: string;
+  id: string
+  name: string
+  email: string
+  message: string
 }
 
 export default function AdminPanel() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState("");
-  const [showDialog, setShowDialog] = useState(true);
-  const [error, setError] = useState("");
+  const [messages, setMessages] = useState<Message[]>([])
+  const [searchTerm, setSearchTerm] = useState("")
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [password, setPassword] = useState("")
+  const [showDialog, setShowDialog] = useState(true)
+  const [error, setError] = useState("")
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (password === "") {
-      setError("Please Enter a Password!");
-      setMessages([]);
-      setIsAuthenticated(false);
+      setError("Please Enter a Password!")
+      setMessages([])
+      setIsAuthenticated(false)
     } else {
       try {
         const response = await axios.post(`/api/getmessages`, {
           password: password,
-        });
+        })
 
         if (response.status === 200) {
-          setIsAuthenticated(true);
-          setMessages(response.data);
-          setError("");
-          setShowDialog(false);
+          setIsAuthenticated(true)
+          setMessages(response.data)
+          setError("")
+          setShowDialog(false)
         }
       } catch (error) {
-        const axiosError = error as AxiosError; // Cast to AxiosError
+        const axiosError = error as AxiosError
         if (axiosError.response && axiosError.response.status === 400) {
-          setError("Password is incorrect!");
+          setError("Password is incorrect!")
         } else {
-          setError("An error occurred while fetching messages.");
+          setError("An error occurred while fetching messages.")
         }
-        setMessages([]);
-        setIsAuthenticated(false);
+        setMessages([])
+        setIsAuthenticated(false)
       }
     }
-  };
+  }
+
+  const handleDeleteMessage = async (id: string) => {
+    try {
+      const response = await axios.delete(`/api/deletemessage/${id}`)
+      if (response.status === 200) {
+        setMessages((prevMessages) =>
+          prevMessages.filter((message) => message.id !== id)
+        )
+      } else {
+        console.error(response.data.error)
+      }
+    } catch (error) {
+      console.error("Failed to delete message:", error)
+    }
+  }
 
   const filteredMessages = Array.isArray(messages)
     ? messages.filter(
@@ -70,7 +85,7 @@ export default function AdminPanel() {
           message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
           message.message.toLowerCase().includes(searchTerm.toLowerCase())
       )
-    : [];
+    : []
 
   return (
     <div className="min-h-screen bg-Mytheme text-white">
@@ -86,17 +101,17 @@ export default function AdminPanel() {
           </DialogHeader>
           <form onSubmit={handlePasswordSubmit} className="space-y-4">
             <div className="grid gap-4">
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
                 <Label
                   htmlFor="password"
-                  className="w-1/4 text-right text-gray-200"
+                  className="w-full sm:w-1/4 text-left sm:text-right text-gray-200"
                 >
                   Password
                 </Label>
                 <Input
                   id="password"
                   type="password"
-                  className="flex-1 p-2 text-gray-200 bg-[#3A3E66] rounded-md focus:ring-2 focus:ring-indigo-500"
+                  className="w-full sm:w-3/4 p-2 text-gray-200 bg-[#3A3E66] rounded-md focus:ring-2 focus:ring-indigo-500"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -119,16 +134,16 @@ export default function AdminPanel() {
 
       {isAuthenticated ? (
         <>
-          <header className="bg-Mytheme pt-8 flex items-center justify-center relative">
-            <div className="flex items-center px-5 py-[14px] shadow-lg bg-Mytheme backdrop-blur-sm fixed w-full">
-              <div className="absolute left-5 top-3">
+          <header className="bg-Mytheme pt-8 flex items-center justify-center">
+            <div className="flex items-center px-5 py-[14px] shadow-lg bg-Mytheme backdrop-blur-sm fixed w-full z-10">
+              <div className="">
                 <AdminPanelSideBar />
               </div>
               <h1 className="text-2xl font-bold mx-auto">Messages</h1>
             </div>
           </header>
 
-          <main className="p-6 pt-12">
+          <main className="p-6 pt-24">
             <Card className="bg-[#32365A] border-none text-white">
               <CardHeader>
                 <div className="relative mt-4">
@@ -148,14 +163,22 @@ export default function AdminPanel() {
                       key={message.id}
                       className="bg-[#3A3E66] border-none text-white"
                     >
-                      <CardContent className="p-4">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
-                          <h3 className="font-semibold">{message.name}</h3>
-                          <p className="text-sm text-gray-400">
-                            {message.email}
-                          </p>
+                      <CardContent className="p-4 bg-[#3A3E66] text-white rounded-md">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+                          <div className="flex flex-col w-full sm:w-5/6 mb-2 sm:mb-0">
+                            <h3 className="font-semibold">{message.name}</h3>
+                            <p className="text-sm text-gray-400 my-1">
+                              {message.email}
+                            </p>
+                            <p className="text-sm break-words">
+                              {message.message}
+                            </p>
+                          </div>
+                          <Trash
+                            className="h-5 w-5 text-gray-400 hover:text-red-500 cursor-pointer mt-2 sm:mt-0"
+                            onClick={() => handleDeleteMessage(message.id)}
+                          />
                         </div>
-                        <p className="text-sm">{message.message}</p>
                       </CardContent>
                     </Card>
                   ))}
@@ -170,12 +193,12 @@ export default function AdminPanel() {
           </main>
         </>
       ) : (
-        <div className="flex items-center justify-center h-screen md:mx-0 mx-5">
-          <p className="text-2xl">
+        <div className="flex items-center justify-center h-screen px-4">
+          <p className="text-xl sm:text-2xl text-center">
             Please enter the correct password to view messages.
           </p>
         </div>
       )}
     </div>
-  );
+  )
 }

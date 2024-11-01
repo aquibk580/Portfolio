@@ -21,12 +21,17 @@ export const AdminPanelSideBar = ({}: MobileSidebarProps) => {
         <div className="flex flex-col text-lg mt-14">
           <SheetTitle className="hidden" />
           <SheetDescription className="hidden" />
-            <button onClick={() => {router.push("/")}} className="flex flex-row items-center w-full py-4 px-14 border-b border-t border-white hover:bg-white hover:text-black transition">
-              <div className="flex justify-center items-center w-12">
-                <HomeIcon size={30} />
-              </div>
-              <span className="flex-grow text-left pl-4">Home</span>
-            </button>
+          <button
+            onClick={() => {
+              router.push("/");
+            }}
+            className="flex items-center justify-center w-full py-4 border-b border-t border-white hover:bg-white hover:text-black transition"
+          >
+            <div className="flex items-center space-x-2">
+              <HomeIcon size={30} />
+              <span>Home</span>
+            </div>
+          </button>
         </div>
       </SheetContent>
     </Sheet>
