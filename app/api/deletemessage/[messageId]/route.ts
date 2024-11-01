@@ -6,7 +6,7 @@ export async function DELETE(
   { params }: { params: { messageId: string } }
 ) {
   try {
-    const messageId = params.messageId;
+    const { messageId } = await params;
 
     if (!messageId) {
       return NextResponse.json(
