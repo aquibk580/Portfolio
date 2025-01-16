@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="bg-Mytheme text-white min-h-screen">
       <Header />
-      <main className="container mx-auto md:px-8 px-5 py-8 md:my-0 pt-28 md:pt-32">
+      <main className="md:px-8 px-5 py-8 md:my-0 pt-28 md:pt-32">
         <About /> 
         <Projects />
         <Skills />
